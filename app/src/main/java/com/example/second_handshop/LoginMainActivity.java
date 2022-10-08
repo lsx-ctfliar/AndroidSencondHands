@@ -53,6 +53,8 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
 
         btn_login.setOnClickListener(this);
         toRegister.setOnClickListener(this);
+
+
         btn_getCode.setOnClickListener(this);
 
 
