@@ -1,5 +1,8 @@
 package com.example.second_handshop;
 
+import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
+
+import com.example.second_handshop.service.nomal_user;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -145,11 +148,35 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
             Log.d("info", body);
             // 解析json串到自己封装的状态
             ResponseBody<Object> dataResponseBody = gson.fromJson(body,jsonType);
-            Log.d("info", dataResponseBody.toString());
+//            Log.d("info", dataResponseBody.toString());
 
+
+            //509292
             //请求成功之后跳转到主页面
-            Intent intent = new Intent(LoginMainActivity.this, MainPageActivity.class);
-            startActivity(intent);
+            int code =dataResponseBody.getCode();
+            if(code==200)
+            {
+                //获取到用户的数据存进用户对象中
+                String data = body.toString();
+                String id = data.split(",")[2].split(":")[2];
+                String appkey = data.split(",")[3].split(":")[1];
+                String username = data.split(",")[4].split(":")[1];
+                String money = data.split(",")[5].split(":")[1];
+                String avatar = data.split(",")[6].split(":")[1];
+
+                Log.d(TAG, "用户的数据获取："+id+appkey+username+money+avatar);
+                nomal_user nomal_user = new nomal_user();
+                nomal_user.setId(id);
+                nomal_user.setAppkey(appkey);
+                nomal_user.setUsername(username);
+                nomal_user.setMoney(money);
+                nomal_user.setAvatar(avatar);
+                Log.d("info", nomal_user.toString());
+
+                Intent intent = new Intent(LoginMainActivity.this, MainPageActivity.class);
+                startActivity(intent);
+            }
+
         }
     };
 
@@ -251,9 +278,13 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
             // 获取响应体的json串
             String body = response.body().string();
             Log.d("info", body);
+
             // 解析json串到自己封装的状态
             ResponseBody3<Object> dataResponseBody = gson.fromJson(body,jsonType);
             Log.d("info", dataResponseBody.toString());
+
+
+
         }
     };
 

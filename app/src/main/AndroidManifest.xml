@@ -79,6 +79,7 @@
         </activity>
         <activity android:name=".RegisterMainActivity" />
         <activity android:name=".MainPageActivity" />
+        <activity android:name=".PublishGoodsActivity" />
     </application>
 
 

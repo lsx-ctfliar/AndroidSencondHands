@@ -11,6 +11,19 @@ public class user {
     private String id;
     private String username;
     private String appkey;
+    private String money;
+    private String avatar;
+
+    @Override
+    public String toString() {
+        return "user{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", appkey='" + appkey + '\'' +
+                ", money='" + money + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
+    }
 
     public String getId() {
         return id;
@@ -52,8 +65,7 @@ public class user {
         this.avatar = avatar;
     }
 
-    private String money;
-    private String avatar;
+
 
 
 
