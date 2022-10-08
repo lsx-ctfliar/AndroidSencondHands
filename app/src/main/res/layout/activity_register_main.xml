@@ -52,7 +52,40 @@
                 android:textSize="25dp"
                 android:textColorHint="#CCCCCC"
                 />
+
+
+
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/l_register_pic_user"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/passwd"
+
+                />
+            <EditText
+                android:id="@+id/l_register_code"
+                android:layout_width="300dp"
+                android:layout_height="55dp"
+                android:maxLines="1"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="50dp"
+                android:hint="请输入验证码"
+                android:textSize="25dp"
+                android:textColorHint="#CCCCCC"
+                />
+
+
+
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,7 +117,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
                 android:background="#FF0000"
-                android:text="返回"
+                android:text="注册"
                 android:textColor="#ffffff"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -106,6 +139,10 @@
 
 
     </LinearLayout>
+
+
+
+
     <FrameLayout
         android:id="@+id/framelayout"
         android:layout_width="match_parent"

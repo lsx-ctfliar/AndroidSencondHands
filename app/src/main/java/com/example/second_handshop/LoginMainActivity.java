@@ -53,11 +53,37 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
 
         btn_login.setOnClickListener(this);
         toRegister.setOnClickListener(this);
+        btn_getCode.setOnClickListener(this);
 
+
+    }
+    @Override
+    public void onClick(View v) {
+        code = et_input_code.getText().toString();
+        phone = et_input_phone.getText().toString();
+        switch (v.getId()) {
+            case R.id.login:
+                post(code, phone);
+
+                break;
+
+            case R.id.btn_toRegister:
+                Intent intent = new Intent(LoginMainActivity.this,RegisterMainActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.btn_getCode:
+                Log.d("info", "onClick: 获取验证码");
+                get();
+
+        }
     }
 
 
 
+
+
+    //登录
     private void post(String code, String phone){
         new Thread(() -> {
 
@@ -106,6 +132,7 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
         public void onFailure(@NonNull Call call, IOException e) {
             //TODO 请求失败处理
             e.printStackTrace();
+            Log.d("info", "登陆失败");
         }
         @Override
         public void onResponse(@NonNull Call call, Response response) throws IOException {
@@ -117,64 +144,12 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
             // 解析json串到自己封装的状态
             ResponseBody<Object> dataResponseBody = gson.fromJson(body,jsonType);
             Log.d("info", dataResponseBody.toString());
+
+            //请求成功之后跳转到主页面
+            Intent intent = new Intent(LoginMainActivity.this, MainPageActivity.class);
+            startActivity(intent);
         }
     };
-
-    @Override
-    public void onClick(View v) {
-        code = et_input_code.getText().toString();
-        phone = et_input_phone.getText().toString();
-        switch (v.getId()) {
-            case R.id.login:
-                post(code, phone);
-                Intent intent = new Intent(LoginMainActivity.this, MainPageActivity.class);
-                break;
-
-            case R.id.btn_toRegister:
-                intent = new Intent(LoginMainActivity.this,RegisterMainActivity.class);
-                startActivity(intent);
-                break;
-
-            case R.id.btn_getCode:
-                get();
-
-        }
-    }
-
-    private void get(){
-        new Thread(() -> {
-
-            phone = et_input_phone.getText().toString();
-            Log.i("info",phone);
-
-            // url路径
-            String url = "http://47.107.52.7:88/member/tran/user/send?phone=";
-            url = url + phone;
-            Log.d("info",url);
-
-            // 请求头
-            Headers headers = new Headers.Builder()
-                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
-                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
-                    .add("Accept", "application/json, text/plain, */*")
-                    .build();
-
-            //请求组合创建
-            Request request = new Request.Builder()
-                    .url(url)
-                    // 将请求头加至请求中
-                    .headers(headers)
-                    .get()
-                    .build();
-            try {
-                OkHttpClient client = new OkHttpClient();
-                //发起请求，传入callback进行回调
-                client.newCall(request).enqueue(callback);
-            }catch (NetworkOnMainThreadException ex){
-                ex.printStackTrace();
-            }
-        }).start();
-    }
 
     /**
      * http响应体的封装协议
@@ -217,5 +192,110 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
                     '}';
         }
     }
+
+
+
+
+    //获取验证码
+    private void get(){
+        new Thread(() -> {
+
+            phone = et_input_phone.getText().toString();
+            Log.i("info",phone);
+
+            // url路径
+            String url = "http://47.107.52.7:88/member/tran/user/send?phone=";
+            url = url + phone;
+            Log.d("info",url);
+
+            // 请求头
+            Headers headers = new Headers.Builder()
+                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
+                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
+                    .add("Accept", "application/json, text/plain, */*")
+                    .build();
+
+            //请求组合创建
+            Request request = new Request.Builder()
+                    .url(url)
+                    // 将请求头加至请求中
+                    .headers(headers)
+                    .get()
+                    .build();
+            try {
+                OkHttpClient client = new OkHttpClient();
+                //发起请求，传入callback进行回调
+                client.newCall(request).enqueue(callback3);
+            }catch (NetworkOnMainThreadException ex){
+                ex.printStackTrace();
+            }
+        }).start();
+    }
+
+
+    /**
+     * 回调
+     */
+    private final Callback callback3 = new Callback() {
+        @Override
+        public void onFailure(@NonNull Call call, IOException e) {
+            //TODO 请求失败处理
+            e.printStackTrace();
+        }
+        @Override
+        public void onResponse(@NonNull Call call, Response response) throws IOException {
+            //TODO 请求成功处理
+            Type jsonType = new TypeToken<ResponseBody3<Object>>(){}.getType();
+            // 获取响应体的json串
+            String body = response.body().string();
+            Log.d("info", body);
+            // 解析json串到自己封装的状态
+            ResponseBody3<Object> dataResponseBody = gson.fromJson(body,jsonType);
+            Log.d("info", dataResponseBody.toString());
+        }
+    };
+
+    /**
+     * http响应体的封装协议
+     * @param <T> 泛型
+     */
+    public static class ResponseBody3 <T> {
+
+        /**
+         * 业务响应码
+         */
+        private int code;
+        /**
+         * 响应提示信息
+         */
+        private String msg;
+        /**
+         * 响应数据
+         */
+        private T data;
+
+        public ResponseBody3(){}
+
+        public int getCode() {
+            return code;
+        }
+        public String getMsg() {
+            return msg;
+        }
+        public T getData() {
+            return data;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "ResponseBody{" +
+                    "code=" + code +
+                    ", msg='" + msg + '\'' +
+                    ", data=" + data +
+                    '}';
+        }
+    }
+
 
 }

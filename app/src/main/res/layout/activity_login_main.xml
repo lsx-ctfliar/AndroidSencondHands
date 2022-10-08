@@ -62,10 +62,10 @@
                 android:id="@+id/pic_pass"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="50dp"
-                android:src="@drawable/passwd"
-                android:layout_marginTop="15dp"
                 android:layout_below="@+id/pic_user"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/passwd"
 
                 />
 
