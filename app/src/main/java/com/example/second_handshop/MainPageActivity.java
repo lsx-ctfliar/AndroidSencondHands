@@ -12,6 +12,7 @@ import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,10 @@ public class MainPageActivity extends AppCompatActivity{
     private TextView myId;
     protected Intent intent;
     private String a;
+    private ImageView kindone;
+    private ImageView kindtwo;
+    private ImageView kindthree;
+    private ImageView kindfour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +70,46 @@ public class MainPageActivity extends AppCompatActivity{
         myId=(TextView)findViewById(R.id.myId);
 
 
-
+        //接口调试
         //要在一进来的时候直接加载商品，，，获取全部商品分类列表接口
 //        Log.d("info", "调用获取全部已经发布的商品的列表");
-        get();
+//        get();
         //看看返回什么数据，之后进行处理
 
 //
 //        Log.d("info", "下面是调用获取全部的商品的信息的返回值");
         //测试接口知道，这个平台的商品类型是已经确定好了的，不能修改了，新增发布商品的时候需要指定已经有了的类型，分页获取已经发布的商品信息的时候 ，也需要指定引进存在的商品类型
-        get2();
+//        get2();
+
+
+
+
+
+
+
         //跳转到主页
+
+        //主界面种类绑定事件，调用接口，获取返回的数据
+        kindone=findViewById(R.id.kind1);
+        kindtwo=findViewById(R.id.kind2);
+        kindthree=findViewById(R.id.kind3);
+        kindfour=findViewById(R.id.kind4);
+
+        //文玩绑定的事件类
+        kindone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String type ="文玩";
+                int typeid = 10;
+                get2(type,typeid);
+
+            }
+        });
+
+
+
+
+        //主页面无效操作跳转到主页面
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +232,7 @@ public class MainPageActivity extends AppCompatActivity{
 
 
     //这里是调用了获取全部商品信息的接口，，，返回值是：
-    private void get2(){
+    private void get2(String type,int typeid){
         new Thread(() -> {
 
             // url路径
@@ -216,7 +250,7 @@ public class MainPageActivity extends AppCompatActivity{
             int number1 =Integer.parseInt(id);
             Log.d("info", "get2: 字符串转化成数字没有问题");
             String url = "http://47.107.52.7:88/member/tran/goods/all?current="+
-                    0+"&size="+0+"&typeId="+2+"&keyword="+"品"+"&userId="+number1;
+                    0+"&size="+0+"&typeId="+typeid+"&keyword="+type+"&userId="+number1;
 
             Log.d("info", "get2: "+url);
             // 请求头

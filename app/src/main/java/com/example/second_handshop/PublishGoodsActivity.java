@@ -1,9 +1,20 @@
 package com.example.second_handshop;
 
+import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +22,12 @@ import com.example.second_handshop.service.nomal_user;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,28 +35,96 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
+import android.util.Log;
 
-public class PublishGoodsActivity extends AppCompatActivity {
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+
+
+
+
+
+public class PublishGoodsActivity extends AppCompatActivity implements View.OnClickListener{
 
     private final Gson gson = new Gson();
+
+    //上传图片参数
+    private ImageView iv_image;
+    private ActivityResultLauncher<Intent> mResultLauncher;
+    private Uri picUri;
+    private ArrayList<File> files;
+
+
+    private Button btn_publish;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_goods);
 
+
+        Log.d("info", "publish_____________");
+
+        //方法定义的时候冲突报错
+//        btn_publish.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                post_image_url();
+//            }
+//        });
+
+
+        files=new ArrayList<>();
+
+        iv_image = findViewById(R.id.m1_image);
+        iv_image.setOnClickListener(this);
+
+        btn_publish =findViewById(R.id.btn_publish);
+        btn_publish.setOnClickListener(this);
+
+        mResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent intent = result.getData();
+                    // 获得选中图片的路径对象
+                    // content://com.android.providers.downloads.documents/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Fting2.jpg
+                    picUri = intent.getData();
+                    if (picUri != null) {
+                        // ImageView 显示刚刚选中的图片
+                        iv_image.setImageURI(picUri);
+                        Log.d("info", "picUri:" + picUri.toString());
+                    }
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
         //调用  发布商品的接口
-        post();
+
 
     }
 
-//892738
+// 892738
 
 
-    private void post(){
+    private void post_goods(){
         new Thread(() -> {
 
             // url路径
@@ -120,6 +203,25 @@ public class PublishGoodsActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.m1_image:
+                // 跳转到系统相册，选择图片，并返回
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                // 设置内容类型为图片类型
+                intent.setType("image/*");
+                // 打开系统相册，并等待图片选择结果
+                mResultLauncher.launch(intent);
+                break;
+            case R.id.btn_publish:
+                post_image_url();
+                break;
+
+        }
+
+    }
+
     /**
      * http响应体的封装协议
      * @param <T> 泛型
@@ -161,5 +263,127 @@ public class PublishGoodsActivity extends AppCompatActivity {
                     '}';
         }
     }
+
+
+
+
+    private void post_image_url() {
+        new Thread(() -> {
+
+            // url路径
+            String url = "http://47.107.52.7:88/member/photo/image/upload";
+
+            // 请求头
+            Headers headers = new Headers.Builder()
+                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
+                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
+                    .add("Accept", "application/json, text/plain, */*")
+                    .build();
+
+
+            MediaType MEDIA_TYPE_PNG = MediaType.parse("application/image/png; charset=utf-8");
+            MultipartBody.Builder mbody = new MultipartBody.Builder().setType(MultipartBody.FORM);
+
+            System.out.println(files);
+            String url2=picUri.toString().split(":")[1].replace("/com.android.external","");
+
+            files.add(new File(url2));
+
+            System.out.println(files);
+            for (File file : files) {
+                if (file.exists()) {
+                    Log.i("imageName:", file.getName());//经过测试，此处的名称不能相同，如果相同，只能保存最后一个图片，不知道那些同名的大神是怎么成功保存图片的。
+                    mbody.addFormDataPart("fileList", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
+                }
+                else {
+                    System.out.println("路径不存在");
+                }
+            }
+            RequestBody requestBody =mbody.build();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    // 将请求头加至请求中
+                    .headers(headers)
+                    .post(requestBody)
+                    .build();
+            try {
+                OkHttpClient client = new OkHttpClient();
+                //发起请求，传入callback进行回调
+                client.newCall(request).enqueue(callback6);
+            }catch (NetworkOnMainThreadException ex){
+                ex.printStackTrace();
+            }
+
+        }).start();
+
+    }
+
+    /**
+     * 回调
+     */
+    private final Callback callback6 = new Callback() {
+        @Override
+        public void onFailure(@NonNull Call call, IOException e) {
+            //TODO 请求失败处理
+            e.printStackTrace();
+        }
+        @Override
+        public void onResponse(@NonNull Call call, Response response) throws IOException {
+            //TODO 请求成功处理
+            Type jsonType = new TypeToken<ResponseBody6<Object>>(){}.getType();
+            // 获取响应体的json串
+            String body = response.body().string();
+            Log.d("info", body);
+            // 解析json串到自己封装的状态
+            ResponseBody6<Object> dataResponseBody = gson.fromJson(body,jsonType);
+//            Log.d("info", dataResponseBody.toString());
+        }
+    };
+
+    /**
+     * http响应体的封装协议
+     * @param <T> 泛型
+     */
+    public static class ResponseBody6 <T> {
+
+        /**
+         * 业务响应码
+         */
+        private int code;
+        /**
+         * 响应提示信息
+         */
+        private String msg;
+        /**
+         * 响应数据
+         */
+        private T data;
+
+        public ResponseBody6(){}
+
+        public int getCode() {
+            return code;
+        }
+        public String getMsg() {
+            return msg;
+        }
+        public T getData() {
+            return data;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "ResponseBody{" +
+                    "code=" + code +
+                    ", msg='" + msg + '\'' +
+                    ", data=" + data +
+                    '}';
+        }
+    }
+
+
+
 
 }

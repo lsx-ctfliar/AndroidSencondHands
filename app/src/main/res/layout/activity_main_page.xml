@@ -33,13 +33,14 @@
            <RelativeLayout
                android:layout_width="wrap_content"
                android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/kind1"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/buy_kind1" />
+
+               <ImageView
+                   android:id="@+id/kind1"
+                   android:layout_width="200dp"
+                   android:layout_height="match_parent"
+                   android:layout_alignParentStart="true"
+                   android:layout_alignParentTop="true"
+                   android:src="@drawable/buy_kind1" />
 
            </RelativeLayout>
 </androidx.cardview.widget.CardView>
@@ -63,17 +64,18 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="290dp"
                 android:orientation="horizontal">
+
                 <androidx.cardview.widget.CardView
-                    android:layout_marginTop="0dp"
                     android:layout_width="wrap_content"
-                    app:cardElevation="100dp"
+                    android:layout_height="290dp"
+                    android:layout_marginTop="0dp"
                     app:cardCornerRadius="10dp"
-                    android:layout_height="290dp">
+                    app:cardElevation="100dp">
+
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
@@ -90,14 +92,16 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
-                    android:layout_height="240dp"
-                    app:cardElevation="100dp"
-                    android:layout_marginTop="40dp"
-                    app:cardCornerRadius="10dp">
+                    android:layout_height="255dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="20dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="100dp">
+
                     <ImageView
                         android:id="@+id/kind4"
                         android:layout_width="200dp"
-                        android:layout_height="200dp"
+                        android:layout_height="230dp"
                         android:layout_toRightOf="@id/kind3"
                         android:src="@drawable/buy_kind4" />
 
