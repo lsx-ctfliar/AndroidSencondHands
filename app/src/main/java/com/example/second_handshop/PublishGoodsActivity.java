@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.second_handshop.service.nomal_user;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,11 +34,11 @@ public class PublishGoodsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_publish_goods);
 
         //调用  发布商品的接口
-
+        post();
 
     }
 
-
+//892738
 
 
     private void post(){
@@ -55,16 +56,26 @@ public class PublishGoodsActivity extends AppCompatActivity {
                     .build();
 
             // 请求体
+            //894909
             // PS.用户也可以选择自定义一个实体类，然后使用类似fastjson的工具获取json串
+            //先写死数据测试接口
             Map<String, Object> bodyMap = new HashMap<>();
-            bodyMap.put("price", 0);
-            bodyMap.put("imageCode", 0);
-            bodyMap.put("typeName", "string");
-            bodyMap.put("typeId", 0);
-            bodyMap.put("id", 0);
-            bodyMap.put("addr", "string");
-            bodyMap.put("userId", 0);
-            bodyMap.put("content", "string");
+
+            int user_id = Integer.parseInt(nomal_user.getId());
+            bodyMap.put("price", 50);
+
+            //一组图片的唯一标识，，，int类型
+            //这个 要在上传文件接口的时候，，把图片上传，返回一串数字
+            bodyMap.put("imageCode", "1579478519476523008");
+
+            bodyMap.put("typeName", "奢品");
+            bodyMap.put("typeId", 2);
+            //发布的时候或者是保存的时候可以忽略，将保存状态变成发布状态的时候一定要传这个参数
+//            bodyMap.put("id", 0);
+            bodyMap.put("addr", "桂林电子科技大学F区36栋");
+            bodyMap.put("userId", user_id);
+            //商品描述
+            bodyMap.put("content", "快要过期的电脑");
             // 将Map转换为字符串类型加入请求体中
             String body = gson.toJson(bodyMap);
 

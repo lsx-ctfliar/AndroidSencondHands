@@ -33,6 +33,8 @@ import okhttp3.Response;
 
 public class LoginMainActivity extends AppCompatActivity implements View.OnClickListener {
 
+
+    nomal_user nomal_user = new nomal_user();
     private final Gson gson = new Gson();
     private Button btn_login;
     private EditText et_input_code;
@@ -158,14 +160,15 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
             {
                 //获取到用户的数据存进用户对象中
                 String data = body.toString();
-                String id = data.split(",")[2].split(":")[2];
-                String appkey = data.split(",")[3].split(":")[1];
-                String username = data.split(",")[4].split(":")[1];
-                String money = data.split(",")[5].split(":")[1];
-                String avatar = data.split(",")[6].split(":")[1];
+                ///////有个坑，这里一定要把得到的字符串除去   双引号，。不然后面的  id在转化成数字的时候会报错
+                String id = data.split(",")[2].split(":")[2].replace("\"","");
+                String appkey = data.split(",")[3].split(":")[1].replace("\"","");
+                String username = data.split(",")[4].split(":")[1].replace("\"","");
+                String money = data.split(",")[5].split(":")[1].replace("\"","");
+                String avatar = data.split(",")[6].split(":")[1].replace("\"","");
 
                 Log.d(TAG, "用户的数据获取："+id+appkey+username+money+avatar);
-                nomal_user nomal_user = new nomal_user();
+
                 nomal_user.setId(id);
                 nomal_user.setAppkey(appkey);
                 nomal_user.setUsername(username);

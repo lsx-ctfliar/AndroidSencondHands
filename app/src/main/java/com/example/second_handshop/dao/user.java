@@ -8,62 +8,54 @@ public class user {
 
 
     //为了方便处理，所有的属性都是使用字符串的形式进行保存
-    private String id;
-    private String username;
-    private String appkey;
-    private String money;
-    private String avatar;
+    private static String id;
+    private static String username;
+    private static String appkey;
+    private static String money;
 
-    @Override
-    public String toString() {
-        return "user{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", appkey='" + appkey + '\'' +
-                ", money='" + money + '\'' +
-                ", avatar='" + avatar + '\'' +
-                '}';
-    }
-
-    public String getId() {
+    public static String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public static void setId(String id) {
+        user.id = id;
     }
 
-    public String getUsername() {
+    public static String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public static void setUsername(String username) {
+        user.username = username;
     }
 
-    public String getAppkey() {
+    public static String getAppkey() {
         return appkey;
     }
 
-    public void setAppkey(String appkey) {
-        this.appkey = appkey;
+    public static void setAppkey(String appkey) {
+        user.appkey = appkey;
     }
 
-    public String getMoney() {
+    public static String getMoney() {
         return money;
     }
 
-    public void setMoney(String money) {
-        this.money = money;
+    public static void setMoney(String money) {
+        user.money = money;
     }
 
-    public String getAvatar() {
+    public static String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public static void setAvatar(String avatar) {
+        user.avatar = avatar;
     }
+
+    private static String avatar;
+
+
 
 
 
