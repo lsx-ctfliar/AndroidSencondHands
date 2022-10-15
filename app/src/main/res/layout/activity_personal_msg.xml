@@ -4,8 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyselfActivity">
-    >
+   >
+
     <LinearLayout
 
         android:layout_width="match_parent"
@@ -89,6 +89,7 @@
 
                 />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,19 +100,20 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/pic_set"/>
+                android:src="@drawable/cart"/>
             <Button
-                android:id="@+id/changepwd"
+                android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
-                android:text="修改密码"
+                android:text="购物车"
                 android:textSize="25dp"
                 android:gravity="left"
 
                 />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -183,7 +185,7 @@
 
         <!--第一个RadioButton-->
         <RadioButton
-            android:id="@+id/button_1"
+            android:id="@+id/rb_home"
             android:text="首页"
             android:textStyle="bold"
             android:button="@null"
@@ -202,7 +204,7 @@
             android:layout_height="match_parent"/>
         <!--第二个RadioButton-->
         <RadioButton
-            android:id="@+id/button_2"
+            android:id="@+id/rb_add"
             android:text="发布闲置"
             android:button="@null"
             android:textStyle="bold"
@@ -219,7 +221,7 @@
             android:layout_width="2dp"
             android:layout_height="match_parent"/>
         <RadioButton
-            android:id="@+id/button_3"
+            android:id="@+id/rb_personal"
             android:text="个人中心"
             android:textStyle="bold"
             android:button="@null"

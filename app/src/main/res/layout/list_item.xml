@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--the android already be leave please use the androidx.carview.widget.CardView-->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp"
+    app:cardCornerRadius="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:src="@drawable/logo_goods"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_image"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="textEnd"
+
+            android:textColor="@color/black"
+            android:textSize="40dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:paddingStart="8dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/secondary_text_light"
+
+            android:textSize="30dp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

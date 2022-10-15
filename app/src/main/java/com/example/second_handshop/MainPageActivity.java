@@ -1,13 +1,10 @@
 package com.example.second_handshop;
 
-import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.view.View;
@@ -15,9 +12,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.example.second_handshop.LoginMainActivity.*;
+
+import com.example.second_handshop.service.good;
 import com.example.second_handshop.service.nomal_user;
+import com.example.second_handshop.util.GetKindGoods;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,7 +29,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainPageActivity extends AppCompatActivity{
+public class MainPageActivity extends AppCompatActivity implements View.OnClickListener{
 
     private final Gson gson = new Gson();
 
@@ -44,7 +42,7 @@ public class MainPageActivity extends AppCompatActivity{
     private Button about;
     private Button login;
     private TextView myId;
-    protected Intent intent;
+
     private String a;
     private ImageView kindone;
     private ImageView kindtwo;
@@ -64,7 +62,7 @@ public class MainPageActivity extends AppCompatActivity{
 
         myself=(Button)findViewById(R.id.myself);
         myshow=(Button)findViewById(R.id.myShow);
-        changepwd=(Button)findViewById(R.id.changepwd);
+
         about=(Button)findViewById(R.id.about);
         login=(Button)findViewById(R.id.login) ;
         myId=(TextView)findViewById(R.id.myId);
@@ -84,9 +82,6 @@ public class MainPageActivity extends AppCompatActivity{
 
 
 
-
-
-
         //跳转到主页
 
         //主界面种类绑定事件，调用接口，获取返回的数据
@@ -95,25 +90,17 @@ public class MainPageActivity extends AppCompatActivity{
         kindthree=findViewById(R.id.kind3);
         kindfour=findViewById(R.id.kind4);
 
-        //文玩绑定的事件类
-        kindone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String type ="文玩";
-                int typeid = 10;
-                get2(type,typeid);
-
-            }
-        });
-
-
+        kindone.setOnClickListener(this);
+        kindtwo.setOnClickListener(this);
+        kindthree.setOnClickListener(this);
+        kindfour.setOnClickListener(this);
 
 
         //主页面无效操作跳转到主页面
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(MainPageActivity.this,MainPageActivity.class);
+                Intent intent = new Intent(MainPageActivity.this,MainPageActivity.class);
                 startActivity(intent);
             }
         });
@@ -123,11 +110,68 @@ public class MainPageActivity extends AppCompatActivity{
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(MainPageActivity.this,PublishGoodsActivity.class);
+                Intent intent = new Intent(MainPageActivity.this, PublishGoodsActivity.class);
                 startActivity(intent);
             }
 
         });
+//895689
+
+        //跳转到个人信息页面
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainPageActivity.this, PersonMessageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.kind1:
+
+                Intent intent = new Intent(MainPageActivity.this, SportPageActivity.class);
+
+
+                intent.putExtra("typeid","10");
+                startActivity(intent);
+                break;
+
+            case R.id.kind2:
+
+
+                /*intent = new Intent(MainPageActivity.this, KindPage1Activity.class);
+                startActivity(intent);*/
+                Intent intent2 = new Intent(MainPageActivity.this, SportPageActivity.class);
+
+//生活用品的id是14
+                intent2.putExtra("typeid","14");
+                startActivity(intent2);
+                break;
+
+
+            case R.id.kind3:
+                Intent intent3 = new Intent(MainPageActivity.this, SportPageActivity.class);
+
+//生活用品的id是14
+                intent3.putExtra("typeid","5");
+                startActivity(intent3);
+
+                break;
+
+            case R.id.kind4:
+
+                Intent intent4 = new Intent(MainPageActivity.this, SportPageActivity.class);
+
+//生活用品的id是14
+                intent4.putExtra("typeid","8");
+                startActivity(intent4);
+                break;
+
+        }
 
     }
 
@@ -188,6 +232,7 @@ public class MainPageActivity extends AppCompatActivity{
         }
     };
 
+
     /**
      * http响应体的封装协议
      * @param <T> 泛型
@@ -232,50 +277,7 @@ public class MainPageActivity extends AppCompatActivity{
 
 
     //这里是调用了获取全部商品信息的接口，，，返回值是：
-    private void get2(String type,int typeid){
-        new Thread(() -> {
 
-            // url路径
-            //构造参数，，，
-            //当前页
-            //商品关键字
-            //页面大小
-            //商品类型ID
-            //当前登录用户的id，，必须参数
-            //全局静态的nomal对象，，，？？？
-            String id = nomal_user.getId();
-            Log.d("info", "get2:id= "+id);
-
-            //这里有问题拿
-            int number1 =Integer.parseInt(id);
-            Log.d("info", "get2: 字符串转化成数字没有问题");
-            String url = "http://47.107.52.7:88/member/tran/goods/all?current="+
-                    0+"&size="+0+"&typeId="+typeid+"&keyword="+type+"&userId="+number1;
-
-            Log.d("info", "get2: "+url);
-            // 请求头
-            Headers headers = new Headers.Builder()
-                    .add("Accept", "application/json, text/plain, */*")
-                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
-                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
-                    .build();
-
-            //请求组合创建
-            Request request = new Request.Builder()
-                    .url(url)
-                    // 将请求头加至请求中
-                    .headers(headers)
-                    .get()
-                    .build();
-            try {
-                OkHttpClient client = new OkHttpClient();
-                //发起请求，传入callback进行回调
-                client.newCall(request).enqueue(callback5);
-            }catch (NetworkOnMainThreadException ex){
-                ex.printStackTrace();
-            }
-        }).start();
-    }
 
     /**
      * 回调
@@ -296,6 +298,13 @@ public class MainPageActivity extends AppCompatActivity{
             // 解析json串到自己封装的状态
             ResponseBody5<Object> dataResponseBody = gson.fromJson(body,jsonType);
 //            Log.d("info", dataResponseBody.toString());
+
+
+
+
+
+
+
         }
     };
 

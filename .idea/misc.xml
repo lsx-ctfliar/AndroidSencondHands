@@ -3,42 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_about_main.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_change_pwd.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_comment_item.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_item_info.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_kind_page1.xml" value="0.259375" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_kind_page2.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_kind_page3.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_kind_page4.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_list_item.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_login_main.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_main.xml" value="0.259375" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_main_m1.xml" value="0.1" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_main_page.xml" value="0.259375" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_my_fabu.xml" value="0.259375" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_myself.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_register_main.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_set_mymsg.xml" value="0.27395833333333336" />
-        <entry key="..\:/Code Save/Andorid/SecondhandShop/app/src/main/res/layout/activity_user_msg.xml" value="0.27395833333333336" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_comment_item.xml" value="0.2015625" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_kind_page1.xml" value="0.26666666666666666" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_kind_page2.xml" value="0.26666666666666666" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_kind_page3.xml" value="0.26666666666666666" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_kind_page4.xml" value="0.2015625" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_list_item.xml" value="0.2015625" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_login_main.xml" value="0.25" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_main.xml" value="0.2015625" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_main_m1.xml" value="0.2015625" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_main_page.xml" value="0.25" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_my_fabu.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_myself.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_publish_goods.xml" value="0.26666666666666666" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_register_main.xml" value="0.2635416666666667" />
-        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_set_mymsg.xml" value="0.38697916666666665" />
+        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/acitvity_sport.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_kind_page1.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_main.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_main_page.xml" value="0.2015625" />
+        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_myself.xml" value="0.2015625" />
+        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/activity_personal_msg.xml" value="0.33064516129032256" />
+        <entry key="..\:/Users/zero/Desktop/wgt_secondhand_goods/SecondhandShop1/app/src/main/res/layout/list_item.xml" value="0.20052083333333334" />
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

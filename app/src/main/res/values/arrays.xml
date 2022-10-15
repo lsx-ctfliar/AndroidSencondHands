@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="images">
+        <item>@drawable/img15</item>
+        <item>@drawable/img14</item>
+        <item>@drawable/img13</item>
+        <item>@drawable/img12</item>
+        <item>@drawable/img11</item>
+        <item>@drawable/img10</item>
+        <item>@drawable/img09</item>
+        <item>@drawable/img08</item>
+        <item>@drawable/img07</item>
+        <item>@drawable/img06</item>
+        <item>@drawable/img05</item>
+        <item>@drawable/img04</item>
+        <item>@drawable/img03</item>
+        <item>@drawable/img02</item>
+        <item>@drawable/img01</item>
+    </string-array>
+</resources>

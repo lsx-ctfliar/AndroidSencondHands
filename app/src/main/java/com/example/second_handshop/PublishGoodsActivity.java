@@ -2,13 +2,24 @@ package com.example.second_handshop;
 
 import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResult;
@@ -19,10 +30,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.second_handshop.service.nomal_user;
+import com.example.second_handshop.util.addGoods;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -42,236 +58,182 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
-
-
-
-
-public class PublishGoodsActivity extends AppCompatActivity implements View.OnClickListener{
-
+public class PublishGoodsActivity extends AppCompatActivity implements View.OnClickListener {
     private final Gson gson = new Gson();
-
     //上传图片参数
     private ImageView iv_image;
     private ActivityResultLauncher<Intent> mResultLauncher;
-    private Uri picUri;
+    private String picPath;
     private ArrayList<File> files;
+    private Spinner sp;
 
+    private int typeId;
+    private String typeName;
+    private byte[] image;
 
     private Button btn_publish;
+    private EditText et_price;
+    private EditText et_addr;
+    private EditText et_content;
+
+
+    private String res;
+    private String url;
+    private Long imageCode;
+    private String addr;
+    private int price;
+    private String content;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_goods);
 
+        et_price = findViewById(R.id.m1_price);
+        et_addr = findViewById(R.id.m1_address);
+        et_content = findViewById(R.id.m1_content);
 
-        Log.d("info", "publish_____________");
+        String[] ctype = new String[]{"选项","生活用品", "学习用品", "电子产品", "体育用品"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ctype);  //创建一个数组适配器
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);     //设置下拉列表框的下拉选项样式
+        Spinner spinner = (Spinner) super.findViewById(R.id.m1_style);
+        spinner.setAdapter(adapter);
+        sp = (Spinner) findViewById(R.id.m1_style);
+        final String kind = (String) sp.getSelectedItem();
+        sp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String option = ctype[position];
+                Log.d("info", "选项: " + option);
+                setTypeId(option);
+                Log.d("info","typeID: " + typeId);
+            }
 
-        //方法定义的时候冲突报错
-//        btn_publish.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                post_image_url();
-//            }
-//        });
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
-
-        files=new ArrayList<>();
+        files = new ArrayList<>();
 
         iv_image = findViewById(R.id.m1_image);
         iv_image.setOnClickListener(this);
 
-        btn_publish =findViewById(R.id.btn_publish);
+        btn_publish = findViewById(R.id.btn_publish);
         btn_publish.setOnClickListener(this);
-
-        mResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == RESULT_OK) {
-                    Intent intent = result.getData();
-                    // 获得选中图片的路径对象
-                    // content://com.android.providers.downloads.documents/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Fting2.jpg
-                    picUri = intent.getData();
-                    if (picUri != null) {
-                        // ImageView 显示刚刚选中的图片
-                        iv_image.setImageURI(picUri);
-                        Log.d("info", "picUri:" + picUri.toString());
-                    }
-                }
-            }
-        });
-
-
-
-
-
-
-
-
 
         //调用  发布商品的接口
 
 
     }
+    
 
-// 892738
+    private void setTypeId(String option) {
+        switch (option) {
+            case "生活用品":
+                typeId = 14;
+                typeName = "其他";
+                break;
 
+            case "学习用品":
+                typeId = 8;
+                typeName = "图书";
+                break;
 
-    private void post_goods(){
-        new Thread(() -> {
-
-            // url路径
-            String url = "http://47.107.52.7:88/member/tran/goods/add";
-
-            // 请求头
-            Headers headers = new Headers.Builder()
-                    .add("Accept", "application/json, text/plain, */*")
-                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
-                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
-                    .add("Content-Type", "application/json")
-                    .build();
-
-            // 请求体
-            //894909
-            // PS.用户也可以选择自定义一个实体类，然后使用类似fastjson的工具获取json串
-            //先写死数据测试接口
-            Map<String, Object> bodyMap = new HashMap<>();
-
-            int user_id = Integer.parseInt(nomal_user.getId());
-            bodyMap.put("price", 50);
-
-            //一组图片的唯一标识，，，int类型
-            //这个 要在上传文件接口的时候，，把图片上传，返回一串数字
-            bodyMap.put("imageCode", "1579478519476523008");
-
-            bodyMap.put("typeName", "奢品");
-            bodyMap.put("typeId", 2);
-            //发布的时候或者是保存的时候可以忽略，将保存状态变成发布状态的时候一定要传这个参数
-//            bodyMap.put("id", 0);
-            bodyMap.put("addr", "桂林电子科技大学F区36栋");
-            bodyMap.put("userId", user_id);
-            //商品描述
-            bodyMap.put("content", "快要过期的电脑");
-            // 将Map转换为字符串类型加入请求体中
-            String body = gson.toJson(bodyMap);
-
-            MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
-
-            //请求组合创建
-            Request request = new Request.Builder()
-                    .url(url)
-                    // 将请求头加至请求中
-                    .headers(headers)
-                    .post(RequestBody.create(MEDIA_TYPE_JSON, body))
-                    .build();
-            try {
-                OkHttpClient client = new OkHttpClient();
-                //发起请求，传入callback进行回调
-                client.newCall(request).enqueue(callback);
-            }catch (NetworkOnMainThreadException ex){
-                ex.printStackTrace();
-            }
-        }).start();
+            case "体育用品":
+                typeId = 10;
+                typeName = "文玩";
+                break;
+            case "电子产品":
+                typeId = 5;
+                typeName = "数码";
+                break;
+            case "选项":
+                typeId = 0;
+        }
     }
-
-    /**
-     * 回调
-     */
-    private final Callback callback = new Callback() {
-        @Override
-        public void onFailure(@NonNull Call call, IOException e) {
-            //TODO 请求失败处理
-            e.printStackTrace();
-        }
-        @Override
-        public void onResponse(@NonNull Call call, Response response) throws IOException {
-            //TODO 请求成功处理
-            Type jsonType = new TypeToken<ResponseBody<Object>>(){}.getType();
-            // 获取响应体的json串
-            String body = response.body().string();
-            Log.d("info", body);
-            // 解析json串到自己封装的状态
-            ResponseBody<Object> dataResponseBody = gson.fromJson(body,jsonType);
-            Log.d("info", dataResponseBody.toString());
-        }
-    };
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.m1_image:
-                // 跳转到系统相册，选择图片，并返回
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                // 设置内容类型为图片类型
-                intent.setType("image/*");
-                // 打开系统相册，并等待图片选择结果
-                mResultLauncher.launch(intent);
+                if (ContextCompat.checkSelfPermission(PublishGoodsActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(PublishGoodsActivity.this, new
+                            String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                } else {
+                    //打开系统相册
+                    Intent intent = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 1);
+                }
                 break;
+
             case R.id.btn_publish:
                 post_image_url();
-                break;
 
+                String str = et_price.getText().toString();
+                price = Integer.valueOf(str);
+                addr = et_addr.getText().toString();
+                content = et_content.getText().toString();
+
+                Log.d("info", "1价格: "+ price);
+                Log.d("info", "1描述: "+ content);
+                Log.d("info", "1地址: "+ addr);
+                while (imageCode == null)
+                {
+                    Log.d(TAG, "de: ");
+                }
+                addGoods addGoods = new addGoods(addr,content,imageCode,price,typeId,typeName,46);
         }
 
     }
 
-    /**
-     * http响应体的封装协议
-     * @param <T> 泛型
-     */
-    public static class ResponseBody <T> {
-
-        /**
-         * 业务响应码
-         */
-        private int code;
-        /**
-         * 响应提示信息
-         */
-        private String msg;
-        /**
-         * 响应数据
-         */
-        private T data;
-
-        public ResponseBody(){}
-
-        public int getCode() {
-            return code;
-        }
-        public String getMsg() {
-            return msg;
-        }
-        public T getData() {
-            return data;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "ResponseBody{" +
-                    "code=" + code +
-                    ", msg='" + msg + '\'' +
-                    ", data=" + data +
-                    '}';
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //获取图片路径
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumns = {MediaStore.Images.Media.DATA};
+            Cursor c = getContentResolver().query(selectedImage, filePathColumns, null, null, null);
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePathColumns[0]);
+            String imagePath = c.getString(columnIndex);
+            picPath = imagePath;
+            Log.i("info", imagePath);
+            showImage(imagePath);
+            c.close();
         }
     }
 
+    //加载图片
+    private void showImage(String imagePath) {
+        Bitmap bm = BitmapFactory.decodeFile(imagePath);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        image = baos.toByteArray();
+        iv_image.setImageBitmap(bm);
 
+    }
 
 
     private void post_image_url() {
         new Thread(() -> {
 
             // url路径
-            String url = "http://47.107.52.7:88/member/photo/image/upload";
+            String url = "http://47.107.52.7:88/member/tran/image/upload";
 
             // 请求头
             Headers headers = new Headers.Builder()
@@ -281,26 +243,27 @@ public class PublishGoodsActivity extends AppCompatActivity implements View.OnCl
                     .build();
 
 
+            MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
             MediaType MEDIA_TYPE_PNG = MediaType.parse("application/image/png; charset=utf-8");
             MultipartBody.Builder mbody = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
             System.out.println(files);
-            String url2=picUri.toString().split(":")[1].replace("/com.android.external","");
-
-            files.add(new File(url2));
-
+            files.add(new File(picPath));
             System.out.println(files);
+
             for (File file : files) {
                 if (file.exists()) {
-                    Log.i("imageName:", file.getName());//经过测试，此处的名称不能相同，如果相同，只能保存最后一个图片，不知道那些同名的大神是怎么成功保存图片的。
+                    Log.i("imageName:", file.getPath());//经过测试，此处的名称不能相同，如果相同，只能保存最后一个图片，不知道那些同名的大神是怎么成功保存图片的。
                     mbody.addFormDataPart("fileList", file.getName(), RequestBody.create(MEDIA_TYPE_PNG, file));
-                }
-                else {
+
+                } else {
                     System.out.println("路径不存在");
                 }
             }
-            RequestBody requestBody =mbody.build();
+            RequestBody requestBody = mbody.build();
 
+
+            //请求组合创建
             Request request = new Request.Builder()
                     .url(url)
                     // 将请求头加至请求中
@@ -310,42 +273,72 @@ public class PublishGoodsActivity extends AppCompatActivity implements View.OnCl
             try {
                 OkHttpClient client = new OkHttpClient();
                 //发起请求，传入callback进行回调
-                client.newCall(request).enqueue(callback6);
-            }catch (NetworkOnMainThreadException ex){
+                client.newCall(request).enqueue(callback);
+            } catch (NetworkOnMainThreadException ex) {
                 ex.printStackTrace();
             }
-
         }).start();
-
     }
+
 
     /**
      * 回调
      */
-    private final Callback callback6 = new Callback() {
+    private final Callback callback = new Callback() {
+
+
         @Override
         public void onFailure(@NonNull Call call, IOException e) {
             //TODO 请求失败处理
             e.printStackTrace();
         }
+
         @Override
         public void onResponse(@NonNull Call call, Response response) throws IOException {
             //TODO 请求成功处理
-            Type jsonType = new TypeToken<ResponseBody6<Object>>(){}.getType();
+            Type jsonType = new TypeToken<ResponseBody<Object>>() {
+            }.getType();
             // 获取响应体的json串
             String body = response.body().string();
             Log.d("info", body);
             // 解析json串到自己封装的状态
-            ResponseBody6<Object> dataResponseBody = gson.fromJson(body,jsonType);
-//            Log.d("info", dataResponseBody.toString());
+            ResponseBody<Object> dataResponseBody = gson.fromJson(body, jsonType);
+            Log.d("info", dataResponseBody.toString());
+
+            res = body;
+
+            JsonParser parser = new JsonParser();
+            // 2.获得 根节点元素
+            JsonElement element = parser.parse(res);
+            // 3.根据 文档判断根节点属于 什么类型的 Gson节点对象
+            JsonObject root = element.getAsJsonObject();
+            String code = root.get("code").getAsString();
+            String msg = root.get("msg").getAsString();
+
+
+            JsonElement dataElement = root.get("data");
+            JsonElement element2 = parser.parse(String.valueOf(dataElement));
+            // 3.根据 文档判断根节点属于 什么类型的 Gson节点对象
+            JsonObject root2 = element2.getAsJsonObject();
+            imageCode = root2.get("imageCode").getAsLong();
+            url = root2.get("imageUrlList").getAsString();
+
+
+            Log.d("info", "imgCode: " + imageCode);
+            Log.d("info", "imgUrl: " + url);
+
+            Intent intent = new Intent(PublishGoodsActivity.this,MainPageActivity.class);
+            startActivity(intent);
+
         }
     };
 
     /**
      * http响应体的封装协议
+     *
      * @param <T> 泛型
      */
-    public static class ResponseBody6 <T> {
+    public static class ResponseBody<T> {
 
         /**
          * 业务响应码
@@ -360,14 +353,17 @@ public class PublishGoodsActivity extends AppCompatActivity implements View.OnCl
          */
         private T data;
 
-        public ResponseBody6(){}
+        public ResponseBody() {
+        }
 
         public int getCode() {
             return code;
         }
+
         public String getMsg() {
             return msg;
         }
+
         public T getData() {
             return data;
         }
@@ -382,8 +378,5 @@ public class PublishGoodsActivity extends AppCompatActivity implements View.OnCl
                     '}';
         }
     }
-
-
-
 
 }

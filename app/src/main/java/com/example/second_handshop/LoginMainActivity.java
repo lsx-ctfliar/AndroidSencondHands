@@ -153,14 +153,13 @@ public class LoginMainActivity extends AppCompatActivity implements View.OnClick
 //            Log.d("info", dataResponseBody.toString());
 
 
-            //509292
             //请求成功之后跳转到主页面
             int code =dataResponseBody.getCode();
             if(code==200)
             {
                 //获取到用户的数据存进用户对象中
                 String data = body.toString();
-                ///////有个坑，这里一定要把得到的字符串除去   双引号，。不然后面的  id在转化成数字的时候会报错
+                ///////有个坑，这里一定要把得到的字符串除去 双引号，。不然后面的  id在转化成数字的时候会报错
                 String id = data.split(",")[2].split(":")[2].replace("\"","");
                 String appkey = data.split(",")[3].split(":")[1].replace("\"","");
                 String username = data.split(",")[4].split(":")[1].replace("\"","");
