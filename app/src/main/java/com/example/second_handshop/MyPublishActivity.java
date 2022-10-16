@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.second_handshop.service.AppidAndSecred_iml;
 import com.example.second_handshop.service.nomal_user;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -46,6 +47,7 @@ public class MyPublishActivity extends AppCompatActivity {
     private TypedArray images;
     private String[] titles = new String[100];
     private String[] authors = new String[100];
+    private String[] list_addr= new String[100];
 
     private List<News> newsList = new ArrayList<>();
     String[] myrecord_content=new String[20];
@@ -56,7 +58,9 @@ public class MyPublishActivity extends AppCompatActivity {
     private int status  = 0;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("info", "!!!!!!!!!!!!!!!!!!!!!");
         setContentView(R.layout.acitvity_sport);
+        Log.d("info", "!!!!!!!!!!!!!!!!--------------");
         //先请求数据，结束后返回处理
         get();
 
@@ -114,7 +118,7 @@ public class MyPublishActivity extends AppCompatActivity {
             int flag = 4;
             int tar=i*16+flag;
             String str = data2[tar];
-            myrecord_content[i]=str.split(":")[1];
+            myrecord_content[i]=str.split(":")[1].replace("\"","");
         }
         for(int i=0;i<total;i++)
         {
@@ -123,12 +127,20 @@ public class MyPublishActivity extends AppCompatActivity {
             String str = data2[tar];
             myrecord_price[i]=str.split(":")[1];
         }
+        for(int i=0;i<total;i++)
+        {
+            int flag=6;
+            int tar =i*16+flag;
+            String str = data2[tar];
+            list_addr[i]="地址："+str.split(":")[1].replace("\"","");
+        }
 
         for(int i=0;i<total;i++)
         {
             System.out.println("  +++++++获取到的两个字符串数组"+"---第"+i+"组");
             System.out.println(myrecord_content[i]);
             System.out.println(myrecord_price[i]);
+            System.out.println(list_addr[i]);
         }
 
 
@@ -154,8 +166,8 @@ public class MyPublishActivity extends AppCompatActivity {
         {
             //将拿到的数据对象列表，转成两个分别类型相同的数据列表
 
-            titles[i] = myrecord_content[i];
-            authors[i]=String.valueOf(myrecord_price[i]);    //将获取到的数字转换成字符串
+            titles[i] = "商品描述："+myrecord_content[i];
+            authors[i]="价格："+String.valueOf(myrecord_price[i]);    //将获取到的数字转换成字符串
 
 //                connent_list.add(goodsList.get(i).getContent());
 //                price_list.add(goodsList.get(i).getPrice());
@@ -189,6 +201,7 @@ public class MyPublishActivity extends AppCompatActivity {
         for (int i = 0; i < total; i++) {
             News news = new News();
             news.setmTitle(titles[i]);
+            news.setmAddr(list_addr[i]);
             news.setAuthor(authors[i]);
             news.setmImageId(images.getResourceId(i, 0));
             newsList.add(news);
@@ -203,6 +216,16 @@ public class MyPublishActivity extends AppCompatActivity {
         private String mAuthor;
         private String mContent;
         private int mImageId;
+
+        public String getmAddr() {
+            return mAddr;
+        }
+
+        public void setmAddr(String mAddr) {
+            this.mAddr = mAddr;
+        }
+
+        private String mAddr;
 
         public String getTitle() {
             return mTitle;
@@ -241,6 +264,7 @@ public class MyPublishActivity extends AppCompatActivity {
         }
 
 
+
     }
 
 
@@ -248,6 +272,7 @@ public class MyPublishActivity extends AppCompatActivity {
         private List<News> mNewsData;
         private Context mContext;
         private int resourceId;
+
 
         public NewsAdapter(Context context, int resourceId, List<News> data) {
             super(context, resourceId, data);
@@ -261,6 +286,7 @@ public class MyPublishActivity extends AppCompatActivity {
             TextView tvTitle;
             TextView tvAuthor;
             ImageView ivImage;
+            TextView tvAddr;
         }
 
 
@@ -279,7 +305,7 @@ public class MyPublishActivity extends AppCompatActivity {
                 viewHolder.tvTitle = view.findViewById(R.id.tv_title);
                 viewHolder.tvAuthor = view.findViewById(R.id.tv_subtitle);
                 viewHolder.ivImage = view.findViewById(R.id.iv_image);
-
+                viewHolder.tvAddr=view.findViewById(R.id.tv_adrr);
                 view.setTag(viewHolder);
             } else {
                 view = convertView;
@@ -289,7 +315,7 @@ public class MyPublishActivity extends AppCompatActivity {
             viewHolder.tvTitle.setText(news.getTitle());
             viewHolder.tvAuthor.setText(news.getAuthor());
             viewHolder.ivImage.setImageResource(news.getImageId());
-
+            viewHolder.tvAddr.setText(news.getmAddr());
             return view;
 
         }
@@ -317,10 +343,11 @@ public class MyPublishActivity extends AppCompatActivity {
             String url = "http://47.107.52.7:88/member/tran/goods/myself?userId="+ nomal_user.getId();
 
             // 请求头
+            AppidAndSecred_iml app = new AppidAndSecred_iml();
             Headers headers = new Headers.Builder()
                     .add("Accept", "application/json, text/plain, */*")
-                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
-                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
+                    .add("appId", app.getAppId())
+                    .add("appSecret", app.getAppSecret())
                     .build();
 
             //请求组合创建

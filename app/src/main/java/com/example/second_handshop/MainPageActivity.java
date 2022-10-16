@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.example.second_handshop.service.AppidAndSecred_iml;
 import com.example.second_handshop.service.good;
 import com.example.second_handshop.service.nomal_user;
 import com.example.second_handshop.util.GetKindGoods;
@@ -36,14 +37,9 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
     private RadioButton button1;
     private RadioButton button2;
     private RadioButton button3;
-    private Button myself;
-    private Button myshow;
-    private Button changepwd;
-    private Button about;
-    private Button login;
-    private TextView myId;
 
-    private String a;
+
+
     private ImageView kindone;
     private ImageView kindtwo;
     private ImageView kindthree;
@@ -60,12 +56,9 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         button3=(RadioButton)findViewById(R.id.button_3);
 
 
-        myself=(Button)findViewById(R.id.myself);
-        myshow=(Button)findViewById(R.id.myShow);
 
-        about=(Button)findViewById(R.id.about);
-        login=(Button)findViewById(R.id.login) ;
-        myId=(TextView)findViewById(R.id.myId);
+
+
 
 
         //接口调试
@@ -188,10 +181,11 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
             String url = "http://47.107.52.7:88/member/tran/goods/type";
 
             // 请求头
+            AppidAndSecred_iml app = new AppidAndSecred_iml();
             Headers headers = new Headers.Builder()
                     .add("Accept", "application/json, text/plain, */*")
-                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
-                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
+                    .add("appId", app.getAppId())
+                    .add("appSecret", app.getAppSecret())
                     .build();
 
             //请求组合创建

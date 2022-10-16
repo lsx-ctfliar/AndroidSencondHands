@@ -29,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.second_handshop.service.AppidAndSecred_iml;
 import com.example.second_handshop.service.nomal_user;
 import com.example.second_handshop.util.addGoods;
 import com.google.gson.Gson;
@@ -195,7 +196,11 @@ public class PublishGoodsActivity extends AppCompatActivity implements View.OnCl
                 {
                     Log.d(TAG, "de: ");
                 }
-                addGoods addGoods = new addGoods(addr,content,imageCode,price,typeId,typeName,46);
+                //之前这里  ，， 用户的id是写死的写成了别人的ID，导致了，查找用户发布记录的时候，总是空
+                int id = Integer.parseInt(nomal_user.getId());
+                System.out.println("登陆用户的nomal_user.getId()="+nomal_user.getId());
+                System.out.println("发布商品的id---------------------："+id);
+                addGoods addGoods = new addGoods(addr,content,imageCode,price,typeId,typeName,id);
         }
 
     }
@@ -236,9 +241,10 @@ public class PublishGoodsActivity extends AppCompatActivity implements View.OnCl
             String url = "http://47.107.52.7:88/member/tran/image/upload";
 
             // 请求头
+            AppidAndSecred_iml app = new AppidAndSecred_iml();
             Headers headers = new Headers.Builder()
-                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
-                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
+                    .add("appId", app.getAppId())
+                    .add("appSecret", app.getAppSecret())
                     .add("Accept", "application/json, text/plain, */*")
                     .build();
 

@@ -14,6 +14,7 @@ import android.util.Log;
 //import com.google.gson.reflect.TypeToken;
 
 
+import com.example.second_handshop.service.AppidAndSecred_iml;
 import com.example.second_handshop.service.good;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -108,9 +109,10 @@ public class GetKindGoods{
             String url = "http://47.107.52.7:88/member/tran/goods/all?typeId="+typeId+"&userId="+userId;
 
             // 请求头
+            AppidAndSecred_iml app = new AppidAndSecred_iml();
             Headers headers = new Headers.Builder()
-                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
-                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
+                    .add("appId", app.getAppId())
+                    .add("appSecret", app.getAppSecret())
                     .add("Accept", "application/json, text/plain, */*")
                     .build();
 

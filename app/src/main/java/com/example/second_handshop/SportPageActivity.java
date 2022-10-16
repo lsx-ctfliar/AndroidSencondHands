@@ -36,8 +36,10 @@ import java.util.Map;
 public class SportPageActivity extends AppCompatActivity {
     public static final String NEWS_TITLE = "new_title";
     public static final String NEWS_AUTHOR = "news_author";
-    private String[] titles = new String[100];
-    private String[] authors = new String[100];
+    private String[] list_content = new String[100];
+    private String[] list_price = new String[100];
+    private String[] list_addr= new String[100];
+
     private TypedArray images;
 
     private List<News> newsList = new ArrayList<>();
@@ -122,10 +124,12 @@ public class SportPageActivity extends AppCompatActivity {
 
                 int price = root3.get("price").getAsInt();
                 String content = root3.get("content").getAsString();
-
+                String address=root3.get("addr").getAsString();
                 //设置对象的值
                 good_one.setPrice(price);
                 good_one.setContent(content);
+                good_one.setAddr(address);
+                System.out.println("地址————------"+address);
 
                 goodsList.add(good_one);
 
@@ -150,7 +154,7 @@ public class SportPageActivity extends AppCompatActivity {
             initData();
 
             System.out.println("商品列表" + getKindGoods.goodsList);
-//        在 MainActivity 类中定义了 titles、authors 两个字符串数组，并使⽤getResources()得
+//        在 MainActivity 类中定义了 list_content、list_price 两个字符串数组，并使⽤getResources()得
 //到 Resources 对象，并通过该对象的getStringArray的⽅法获取 arrays.xml ⽂
 //件中定义的字符串数组资源。
             newsAdapter = new NewsAdapter(
@@ -158,7 +162,7 @@ public class SportPageActivity extends AppCompatActivity {
                     R.layout.list_item,
                     newsList);
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-//                android.R.layout.simple_list_item_1,titles);
+//                android.R.layout.simple_list_item_1,list_content);
             ListView lvNewsList = findViewById(R.id.lv_news_list);
             lvNewsList.setAdapter(newsAdapter);
 
@@ -172,36 +176,41 @@ public class SportPageActivity extends AppCompatActivity {
             {
                 //将拿到的数据对象列表，转成两个分别类型相同的数据列表
 
-                titles[i] = goodsList.get(i).getContent();
-                authors[i]=String.valueOf(goodsList.get(i).getPrice());    //将获取到的数字转换成字符串
+                list_addr[i] = "商品地址："+goodsList.get(i).getAddr();
+                list_content[i] ="商品描述："+goodsList.get(i).getContent();
+                list_price[i]="商品价格："+String.valueOf(goodsList.get(i).getPrice());    //将获取到的数字转换成字符串
                 System.out.println("价格-------"+goodsList.get(i).getPrice());
+                System.out.println("价格-------"+goodsList.get(i).getAddr());
+                Log.d("info", "地址参数---- "+list_addr[i]);
 //                connent_list.add(goodsList.get(i).getContent());
 //                price_list.add(goodsList.get(i).getPrice());
          }
 
 
 
-//            titles = getResources().getStringArray(R.array.titles);
-//            authors = getResources().getStringArray(R.array.authors);
+//            list_content = getResources().getStringArray(R.array.list_content);
+//            list_price = getResources().getStringArray(R.array.list_price);
 
-//            titles = connent_list;
-//            authors=price_list;
-            System.out.println("!!!!!!!!!!"+ titles[1]);
+//            list_content = connent_list;
+//            list_price=price_list;
+            System.out.println("!!!!!!!!!!"+ list_content[1]);
 
 
 
             images = getResources().obtainTypedArray(R.array.images);
 
-              String str = Arrays.toString(titles);
+              String str = Arrays.toString(list_content);
 
 
 
 
             for (int i = 0; i < length; i++) {
                 News news = new News();
-                news.setmTitle(titles[i]);
-                news.setAuthor(authors[i]);
+                news.setAddr(list_addr[i]);
+                news.setmTitle(list_content[i]);
+                news.setAuthor(list_price[i]);
                 news.setmImageId(images.getResourceId(i, 0));
+                System.out.println("news里面的地址："+news.getAddr());
                 newsList.add(news);
             }
 
@@ -213,6 +222,17 @@ public class SportPageActivity extends AppCompatActivity {
             private String mTitle;
             private String mAuthor;
             private String mContent;
+            private String maddr;
+
+            public String getAddr() {
+                return maddr;
+            }
+
+            public void setAddr(String addr) {
+                this.maddr = addr;
+            }
+
+
             private int mImageId;
 
             public String getTitle() {
@@ -271,6 +291,7 @@ public class SportPageActivity extends AppCompatActivity {
             class ViewHolder {
                 TextView tvTitle;
                 TextView tvAuthor;
+                TextView tvAddr;
                 ImageView ivImage;
             }
 
@@ -287,9 +308,11 @@ public class SportPageActivity extends AppCompatActivity {
                             .inflate(resourceId, parent, false);
 
                     viewHolder = new ViewHolder();
+
                     viewHolder.tvTitle = view.findViewById(R.id.tv_title);
                     viewHolder.tvAuthor = view.findViewById(R.id.tv_subtitle);
                     viewHolder.ivImage = view.findViewById(R.id.iv_image);
+                    viewHolder.tvAddr = view.findViewById(R.id.tv_adrr);
 
                     view.setTag(viewHolder);
                 } else {
@@ -300,6 +323,7 @@ public class SportPageActivity extends AppCompatActivity {
                 viewHolder.tvTitle.setText(news.getTitle());
                 viewHolder.tvAuthor.setText(news.getAuthor());
                 viewHolder.ivImage.setImageResource(news.getImageId());
+                viewHolder.tvAddr.setText(news.getAddr());
 
                 return view;
 

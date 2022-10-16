@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 
+import com.example.second_handshop.service.AppidAndSecred_iml;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -63,9 +64,10 @@ public class addGoods<T> {
             String url = "http://47.107.52.7:88/member/tran/goods/add";
 
             // 请求头
+            AppidAndSecred_iml app = new AppidAndSecred_iml();
             Headers headers = new Headers.Builder()
-                    .add("appId", "d9b1f1c026fa4b8c94423639085ddd22")
-                    .add("appSecret", "53864593b0a674eb842ad86bc222e2d437138")
+                    .add("appId", app.getAppId())
+                    .add("appSecret", app.getAppSecret())
                     .add("Accept", "application/json, text/plain, */*")
                     .build();
 

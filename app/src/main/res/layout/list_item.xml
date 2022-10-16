@@ -25,10 +25,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_image"
+            android:hint="描述："
             android:paddingStart="8dp"
             android:paddingTop="8dp"
             android:paddingBottom="4dp"
-            android:textAlignment="textEnd"
+            android:textAlignment="textStart"
 
             android:textColor="@color/black"
             android:textSize="40dp"
@@ -36,10 +37,26 @@
 
         <TextView
             android:id="@+id/tv_subtitle"
+            android:hint="价格："
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_title"
+            android:paddingStart="8dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="textEnd"
+            android:textColor="@color/teal_700"
+
+
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/tv_adrr"
+            android:hint="地址："
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_subtitle"
             android:paddingStart="8dp"
             android:paddingBottom="4dp"
             android:textAlignment="textEnd"

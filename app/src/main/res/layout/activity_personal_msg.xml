@@ -78,7 +78,7 @@
                 android:layout_marginTop="10dp"
                 android:src="@drawable/pic_search"/>
             <Button
-                android:id="@+id/myShow"
+                android:id="@+id/person_myShow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
@@ -185,7 +185,7 @@
 
         <!--第一个RadioButton-->
         <RadioButton
-            android:id="@+id/rb_home"
+            android:id="@+id/persion_home"
             android:text="首页"
             android:textStyle="bold"
             android:button="@null"
@@ -204,7 +204,7 @@
             android:layout_height="match_parent"/>
         <!--第二个RadioButton-->
         <RadioButton
-            android:id="@+id/rb_add"
+            android:id="@+id/persion_add"
             android:text="发布闲置"
             android:button="@null"
             android:textStyle="bold"
@@ -221,7 +221,7 @@
             android:layout_width="2dp"
             android:layout_height="match_parent"/>
         <RadioButton
-            android:id="@+id/rb_personal"
+            android:id="@+id/persion_personal"
             android:text="个人中心"
             android:textStyle="bold"
             android:button="@null"
